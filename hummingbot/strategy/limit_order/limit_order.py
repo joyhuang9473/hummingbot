@@ -6,7 +6,7 @@ from hummingbot.strategy.market_trading_pair_tuple import MarketTradingPairTuple
 from hummingbot.logger import HummingbotLogger
 from hummingbot.strategy.strategy_py_base import StrategyPyBase
 
-has_logger = None
+hws_logger = None
 
 
 class LimitOrder(StrategyPyBase):
