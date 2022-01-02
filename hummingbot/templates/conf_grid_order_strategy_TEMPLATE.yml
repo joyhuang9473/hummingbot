@@ -1,0 +1,8 @@
+template_version: 1
+strategy: null
+connector: null
+market: null
+filled_order_delay: 60
+coin_percentage: 50
+usd_percentage: 50
+rebalance_percentage: 1
