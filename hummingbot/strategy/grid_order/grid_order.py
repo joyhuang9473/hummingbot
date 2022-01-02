@@ -525,10 +525,10 @@ class GridOrder(StrategyPyBase):
 
     def did_fill_order(self, order_filled_event):
         order_id = order_filled_event.order_id
-        market_info = self._sb_order_tracker.c_get_shadow_market_pair_from_order_id(order_id)
+        market_info = self._sb_order_tracker.get_shadow_market_pair_from_order_id(order_id)
 
         if market_info is not None:
-            limit_order_record = self._sb_order_tracker.c_get_shadow_limit_order(order_id)
+            limit_order_record = self._sb_order_tracker.get_shadow_limit_order(order_id)
             # order_fill_record = (limit_order_record, order_filled_event)
             _ = (limit_order_record, order_filled_event)
 
