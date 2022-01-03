@@ -59,6 +59,7 @@ class GridOrder(StrategyPyBase):
                  hanging_orders_cancel_pct: Decimal = Decimal("0.1"),
                  logging_options: int = OPTION_LOG_ALL,
                  should_wait_order_cancel_confirmation = True,
+                 hb_app_notification: bool = False,
                  ):
         super().__init__()
         self._market_info = market_info
@@ -99,6 +100,8 @@ class GridOrder(StrategyPyBase):
         self._order_level_amount = order_level_amount
         self._order_amount = 0
         self._order_levels = order_levels
+
+        self._hb_app_notification = hb_app_notification
 
     @property
     def filled_order_delay(self) -> float:
