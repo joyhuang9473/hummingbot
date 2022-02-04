@@ -243,14 +243,14 @@ class GridOrder(StrategyPyBase):
             for level in range(0, self._buy_levels):
                 price = buy_reference_price
                 buy_reference_price = float(buy_reference_price)
-                size = float("{:.2f}".format(quote_balance * self._rebalance_percentage / 100.0 / buy_reference_price))
+                size = float("{:.6f}".format(quote_balance * self._rebalance_percentage / 100.0 / buy_reference_price))
                 if size > 0:
                     buys.append(PriceSize(Decimal(price), Decimal(size)))
                     self._order_amount = size
         elif not sell_reference_price.is_nan() and (base_percentage > (self._base_percentage + self._rebalance_percentage)):
             for level in range(0, self._sell_levels):
                 price = sell_reference_price
-                size = float("{:.2f}".format(base_quantity * self._rebalance_percentage / 100.0))
+                size = float("{:.6f}".format(base_quantity * self._rebalance_percentage / 100.0))
                 if size > 0:
                     sells.append(PriceSize(Decimal(price), Decimal(size)))
                     self._order_amount = size
