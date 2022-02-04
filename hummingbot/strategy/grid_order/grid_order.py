@@ -202,11 +202,10 @@ class GridOrder(StrategyPyBase):
             proposal = None
             if self._create_timestamp <= self.current_timestamp:
                 base_quantity = float(self._market_info.market.get_available_balance(self.base_asset))
-                base_balance = base_quantity * float(self.get_price())
                 quote_balance = float(self._market_info.market.get_available_balance(self.quote_asset))
 
                 # 1. Create base order proposals
-                proposal = self.create_base_proposal(base_balance, quote_balance)
+                proposal = self.create_base_proposal(base_quantity, quote_balance)
                 # 2. Apply functions that limit numbers of buys and sells proposal
                 self.apply_order_levels_modifiers(proposal)
                 # 3. Apply functions that modify orders price
@@ -226,7 +225,7 @@ class GridOrder(StrategyPyBase):
         finally:
             self._last_timestamp = timestamp
 
-    def create_base_proposal(self, base_balance, quote_balance):
+    def create_base_proposal(self, base_quantity, quote_balance):
         market = self._market_info.market
         buys = []
         sells = []
@@ -234,6 +233,7 @@ class GridOrder(StrategyPyBase):
         buy_reference_price = market.get_price_by_type(self.trading_pair, PriceType.BestBid)
         sell_reference_price = market.get_price_by_type(self.trading_pair, PriceType.BestAsk)
 
+        base_balance = base_quantity * float(self.get_price())
         total_usd = base_balance + quote_balance
         base_percentage = float(100 * base_balance / total_usd)
 
@@ -250,7 +250,7 @@ class GridOrder(StrategyPyBase):
         elif not sell_reference_price.is_nan() and (base_percentage > (self._base_percentage + self._rebalance_percentage)):
             for level in range(0, self._sell_levels):
                 price = sell_reference_price
-                size = float("{:.2f}".format(base_balance * self._rebalance_percentage / 100.0))
+                size = float("{:.2f}".format(base_quantity * self._rebalance_percentage / 100.0))
                 if size > 0:
                     sells.append(PriceSize(Decimal(price), Decimal(size)))
                     self._order_amount = size
